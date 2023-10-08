@@ -11,22 +11,28 @@ Let me briefly explain you the concept:
 Now, how do I implement this in code? How do I go about having 2 different intended ranges?
 
 Please add to my code:
-
-ChatGPT conversation link: https://chat.openai.com/share/072e4af0-1980-4fc3-9e33-b1607dce19d1
-
 '''
 
 ROWS = 2
 COLS = 12
+SEP_INDEX = 4
 
 # The first 4 columns are for bikes, the next 8 are for cars
 # Let's initialize bike range which is a list of coordinates of cells:
-bike_range = [(0, 0), (0, 1), (1, 0), (1, 1)]    
+bike_range = [(i, j) for i in range(2) for j in range(SEP_INDEX)]
+print(bike_range)
+car_range = [(i, j) for i in range(2) for j in range(SEP_INDEX, COLS)]
+print(car_range)
+# car_head_range = [(0, SEP_INDEX + 2*i) for i in range((COLS-SEP_INDEX)/2)]
+# print(car_head_range)
+car_cell_groups = [[(0, SEP_INDEX + 2*i), (0, SEP_INDEX + 2*i + 1), (1, SEP_INDEX + 2*i), (1, SEP_INDEX + 2*i + 1)] for i in range(int((COLS-SEP_INDEX)/2))]
+
+
 
 class Cell:
     status = None # Usually status will be assigned to a Vehicle object
     constraints = None # List of other Cell objects that this Cell is constrained by
-    def __init__(self, x, y, status, constraints):
+    def __init__(self, status, constraints):
         self.status = status
         self.constraints = constraints
 
@@ -48,5 +54,50 @@ class ParkingLot:
     def __init__(self, rows, cols):
         self.rows = rows
         self.cols = cols
-        self.cells = [[Cell for x in range(cols)] for y in range(rows)] # 2D array of Cell objects, which in turn contain Vehicle objects
+        self.cells = [[Cell(status=None, constraints=None) for x in range(cols)] for y in range(rows)] # 2D array of Cell objects, which in turn contain Vehicle objects
+    def assign_cell(self, vehicle):
+        if vehicle.type == 'bike':
+            # Iterate through the bike_range and check if any of them are empty
+            for i, j in bike_range:
+                if self.cells[i][j].status == None:
+                    self.cells[i][j].status = vehicle
+                    return (i, j)
+                else:
+                    return None
+        elif vehicle.type == 'car':
+            # Iterate through the car_cell_groups and check if any of them are there such that all 4 cells in each group are empty
+            for group in car_cell_groups:
+                if all(self.cells[i][j].status == None for i, j in group):
+                    for i, j in group:
+                        self.cells[i][j].status = vehicle
+                    return group
+                else:
+                    return None
+        else:
+            return None
+    def remove_vehicle(self, vehicle):
+        pass
+    def get_vehicle(self, vehicle_id):
+        pass
+    def display(self):
+        for i in range(self.rows):
+            for j in range(self.cols):
+                if self.cells[i][j].status == None:
+                    print('[ ]', end=' ')
+                elif self.cells[i][j].status.type == 'bike':
+                    print('[B]', end=' ')
+                elif self.cells[i][j].status.type == 'car':
+                    print('[C]', end=' ')
+            print()
 
+# testing the ParkingLot Class:
+parking_lot = ParkingLot(ROWS, COLS)
+
+parking_lot.display()
+print()
+parking_lot.assign_cell(Vehicle(type='bike', in_time=0, out_time=0, registration='KA-01-HH-1234'))
+parking_lot.display()
+print()
+parking_lot.assign_cell(Vehicle(type='car', in_time=0, out_time=0, registration='KA-01-HH-1235'))
+parking_lot.display()
+print()
