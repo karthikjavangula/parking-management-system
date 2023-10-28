@@ -3,11 +3,12 @@ from parking import ParkingLot, Vehicle
 import time
 
 ROWS = 2
-COLS = 2
-SEP_INDEX = 2
+COLS = 12
+SEP_INDEX = 4
 
 DELAY = 0.25
 SHORT_DELAY = 0.1
+PAUSE = 10
 
 import tkinter as tk
 
@@ -173,39 +174,47 @@ gui.update_display()
 # The gui has to update for every step, along with a half-second delay. Use loops to do this.
 # Do note though that the maximum number of cars = (ROWS * COLS)/4, and the maximum number of bikes = (ROWS * COLS)
 
-# 1. Filling the entire parking lot with cars and bikes
-for i in range(ROWS * int((COLS - SEP_INDEX) / 4)):
-    parking_lot.assign_cell(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
-    gui.update_display()
-    time.sleep(DELAY)
-for i in range(ROWS * SEP_INDEX):
-    parking_lot.assign_cell(Vehicle(type='bike', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'bike{i}'))
-    gui.update_display()
-    time.sleep(DELAY)
+# # 1. Filling the entire parking lot with cars and bikes
+# for i in range(ROWS * int((COLS - SEP_INDEX) / 4)):
+#     parking_lot.assign_cell(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
+#     gui.update_display()
+#     time.sleep(DELAY)
+# for i in range(ROWS * SEP_INDEX):
+#     parking_lot.assign_cell(Vehicle(type='bike', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'bike{i}'))
+#     gui.update_display()
+#     time.sleep(DELAY)
 
-# 2. Removing all the cars and bikes (in reverse order to their addition):
-for i in range(ROWS * SEP_INDEX - 1, -1, -1):
-    parking_lot.remove_vehicle(Vehicle(type='bike', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'bike{i}'))
-    gui.update_display()
-    time.sleep(DELAY)
-for i in range(ROWS * int((COLS - SEP_INDEX) / 4) - 1, -1, -1):
-    parking_lot.remove_vehicle(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
-    gui.update_display()
-    time.sleep(DELAY)
+# time.sleep(PAUSE)
 
-# 3. Filling the entire parking lot with only cars
-for i in range(int(ROWS * COLS / 4)):
-    parking_lot.assign_cell(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
-    print(f'car{i} added')
-    gui.update_display()
-    time.sleep(DELAY)
+# # 2. Removing all the cars and bikes (in reverse order to their addition):
+# for i in range(ROWS * SEP_INDEX - 1, -1, -1):
+#     parking_lot.remove_vehicle(Vehicle(type='bike', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'bike{i}'))
+#     gui.update_display()
+#     time.sleep(DELAY)
+# for i in range(ROWS * int((COLS - SEP_INDEX) / 4) - 1, -1, -1):
+#     parking_lot.remove_vehicle(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
+#     gui.update_display()
+#     time.sleep(DELAY)
 
-# 4. Removing all the cars from the parking lot
-for i in range(int(ROWS * COLS / 4) - 1, -1, -1):
-    parking_lot.remove_vehicle(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
-    print(f'car{i} removed')
-    gui.update_display()
-    time.sleep(DELAY)
+# time.sleep(PAUSE)
+
+# # 3. Filling the entire parking lot with only cars
+# for i in range(int(ROWS * COLS / 4)):
+#     parking_lot.assign_cell(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
+#     print(f'car{i} added')
+#     gui.update_display()
+#     time.sleep(DELAY)
+
+# time.sleep(PAUSE)
+
+# # 4. Removing all the cars from the parking lot
+# for i in range(int(ROWS * COLS / 4) - 1, -1, -1):
+#     parking_lot.remove_vehicle(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
+#     print(f'car{i} removed')
+#     gui.update_display()
+#     time.sleep(DELAY)
+
+# time.sleep(PAUSE)
 
 # 5. Filling the entire parking lot with only bikes
 for i in range(ROWS * COLS):
@@ -214,6 +223,8 @@ for i in range(ROWS * COLS):
     gui.update_display()
     time.sleep(SHORT_DELAY)
 
+time.sleep(PAUSE)
+
 # 6. Removing all the bikes from the parking lot
 for i in range(ROWS * COLS - 1, -1, -1):
     parking_lot.remove_vehicle(Vehicle(type='bike', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'bike{i}'))
@@ -221,42 +232,43 @@ for i in range(ROWS * COLS - 1, -1, -1):
     gui.update_display()
     time.sleep(SHORT_DELAY)
 
-# 7. Partially fill the parking lot with cars, and then fill all remaining spots with bikes
-for i in range(int(ROWS * COLS / 4)):
-    parking_lot.assign_cell(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
-    print(f'car{i} added')
-    gui.update_display()
-    time.sleep(SHORT_DELAY)
+time.sleep(PAUSE)
 
-for i in range(int(ROWS * COLS / 4), ROWS * COLS):
-    parking_lot.assign_cell(Vehicle(type='bike', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'bike{i}'))
-    print(f'bike{i} added')
-    gui.update_display()
-    time.sleep(SHORT_DELAY)
+# # 7. Partially fill the parking lot with cars, and then fill all remaining spots with bikes
+# for i in range(int(ROWS * COLS / 4)):
+#     parking_lot.assign_cell(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
+#     print(f'car{i} added')
+#     gui.update_display()
+#     time.sleep(SHORT_DELAY)
 
-# 8. Partially fill the parking lot with bikes, and then fill all remaining spots with cars
-for i in range(ROWS * COLS):
-    parking_lot.assign_cell(Vehicle(type='bike', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'bike{i}'))
-    print(f'bike{i} added')
-    gui.update_display()
-    time.sleep(SHORT_DELAY)
+# for i in range(int(ROWS * COLS / 4), ROWS * COLS):
+#     parking_lot.assign_cell(Vehicle(type='bike', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'bike{i}'))
+#     print(f'bike{i} added')
+#     gui.update_display()
+#     time.sleep(SHORT_DELAY)
 
-for i in range(ROWS * COLS):
-    parking_lot.assign_cell(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
-    print(f'car{i} added')
-    gui.update_display()
-    time.sleep(SHORT_DELAY)
+# # 8. Partially fill the parking lot with bikes, and then fill all remaining spots with cars
+# for i in range(ROWS * COLS):
+#     parking_lot.assign_cell(Vehicle(type='bike', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'bike{i}'))
+#     print(f'bike{i} added')
+#     gui.update_display()
+#     time.sleep(SHORT_DELAY)
 
-# 9. Remove all vehicles from the parking lot
-for i in range(ROWS * COLS - 1, -1, -1):
-    parking_lot.remove_vehicle(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
-    print(f'car{i} removed')
-    gui.update_display()
-    time.sleep(SHORT_DELAY)
+# for i in range(ROWS * COLS):
+#     parking_lot.assign_cell(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
+#     print(f'car{i} added')
+#     gui.update_display()
+#     time.sleep(SHORT_DELAY)
 
-for i in range(ROWS * COLS - 1, -1, -1):
-    parking_lot.remove_vehicle(Vehicle(type='bike', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'bike{i}'))
-    print(f'bike{i} removed')
-    gui.update_display()
-    time.sleep(SHORT_DELAY)
+# # 9. Remove all vehicles from the parking lot
+# for i in range(ROWS * COLS - 1, -1, -1):
+#     parking_lot.remove_vehicle(Vehicle(type='car', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'car{i}'))
+#     print(f'car{i} removed')
+#     gui.update_display()
+#     time.sleep(SHORT_DELAY)
 
+# for i in range(ROWS * COLS - 1, -1, -1):
+#     parking_lot.remove_vehicle(Vehicle(type='bike', in_time=datetime.datetime.now(), out_time=datetime.datetime.now() + datetime.timedelta(seconds=100), id=f'bike{i}'))
+#     print(f'bike{i} removed')
+#     gui.update_display()
+#     time.sleep(SHORT_DELAY)
