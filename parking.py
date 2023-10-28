@@ -2,6 +2,7 @@
 Note that I'm using the .id and .type keywords for the Vehicle class, but I'm pretty sure it's not a problem as long as they're not used as function names.
 '''
 
+
 class Cell:
     status = None # Usually status will be assigned to a Vehicle object
     x = None
@@ -40,6 +41,13 @@ class ParkingLot:
     
     
     def __init__(self, rows, cols, separator_index):
+        if rows != 2:
+            raise Exception('Number of rows must be 2')
+        if cols < 2:
+            raise Exception('Number of columns must be greater than 2')
+        if separator_index < 1 or separator_index > cols:
+            raise Exception('Separator index must be between 1 and number of columns')
+        
         self.rows = rows
         self.cols = cols
         self.separator_index = separator_index
@@ -114,6 +122,10 @@ class ParkingLot:
                             for group in self.car_cell_groups:
                                 if (cell.x, cell.y) in group:
                                     return group
+                            for group in self.car_cell_groups2:
+                                # print(group)
+                                if all(self.cells[i][j].status.id == vehicle_id for i, j in group):
+                                    return group
         return None
             
     
@@ -181,5 +193,8 @@ class ParkingLot:
 
 
 '''
-Space for Code Description
+KJ: Are there any problems with syntax, or is there any better way to do a few things over here? Please let me know.
+CoPilot: I think you can use a dictionary instead of a list of lists for the cells. It will be easier to access the cells that way.
+KJ: I'm gonna change that, What else can I do to improve the code?
+CoPilot: 
 '''
